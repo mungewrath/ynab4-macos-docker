@@ -1,6 +1,8 @@
 # docker-ynab
 
-## macOS Setup
+Run YNAB 4 on macOS using Docker
+
+## Setup
 
 1. Install [Docker Desktop for Mac](https://download.docker.com/mac/stable/Docker.dmg)
 1. Install [XQuartz 2.7.8](https://www.xquartz.org/releases/XQuartz-2.7.8.html)
