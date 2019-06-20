@@ -1,13 +1,13 @@
-# README
+# docker-ynab
 
-Build the docker container:
+## macOS Setup
 
-`docker build -t YOUR-CONTAINER-NAME https://raw.github.com/shofetim/ynab/master/Dockerfile`
-
-## FAQ
-
-### Wine cannot start x?
-
-This seems to be a permissions issue on latest versions of Ubuntu, try:
-
-`xhost +`
+1. Install [Docker Desktop for Mac](https://download.docker.com/mac/stable/Docker.dmg)
+1. Install [XQuartz 2.7.8](https://www.xquartz.org/releases/XQuartz-2.7.8.html)
+1. Open XQuartz > Preferences > Security and check "Allow connections from network clients" 
+1. Log out and back in again
+1. Run:
+```
+IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}') && export IP
+xhost + $IP
+docker-compose up
