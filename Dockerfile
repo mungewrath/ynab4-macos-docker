@@ -1,9 +1,10 @@
-FROM ubuntu:15.04
+FROM ubuntu:18.04
+MAINTAINER Brady Holt "brady.holt@gmail.com"
 
-MAINTAINER Jordan Schatz "jordan@noionlabs.com"
-
-# Let apt know that we will be running non-interactively.
 ENV DEBIAN_FRONTEND noninteractive
+
+# Install base packages
+RUN apt-get update && apt-get install -y --no-install-recommends software-properties-common gnupg2 sudo
 
 # Setup i386 architecture
 RUN dpkg --add-architecture i386; \
@@ -11,13 +12,17 @@ RUN dpkg --add-architecture i386; \
           >>  /etc/apt/sources.list; \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5A9A06AEF9CB8DB0
 
-# Get the latest WINE
-RUN apt-get update; apt-get install -y wine1.7 winetricks wine-mono4.5.6 wine-gecko2.34
+# Install WINE
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv F987672F
+RUN apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'; \
+    apt-get update; \
+    apt-get install -y --install-recommends winehq-stable winetricks
 
-# Set the locale and timezone.
-RUN localedef -v -c -i en_US -f UTF-8 en_US.UTF-8 || :
-RUN echo "America/Los_Angeles" > /etc/timezone
-RUN dpkg-reconfigure -f noninteractive tzdata
+# Set timezone.
+ENV TZ=America/Los_Angeles
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+#RUN ldconfig -p | grep -i gl.so
 
 # Create a user inside the container, what has the same UID as your
 # user on the host system, to permit X11 socket sharing / GUI Your ID
@@ -34,9 +39,13 @@ ENV HOME /home/docker
 WORKDIR /home/docker
 
 # Add the ynab installer to the image.
-ADD ["http://www.youneedabudget.com/CDNOrigin/download/ynab4/liveCaptive/Win/YNAB%204_4.3.729_Setup.exe", "ynab_setup.exe"]
+ADD ["https://downloadpull-youneedabudgetco.netdna-ssl.com/ynab4/liveCaptive/Win/YNAB%204_4.3.857_Setup.exe", "ynab_setup.exe"]
 
 # When it is added via the dockerfile it is owned read+write only by root
 RUN chown docker:docker ynab_setup.exe
 
 USER docker
+
+ENTRYPOINT ["/bin/bash", "-l", "-c"]
+CMD ["wine ./ynab_setup.exe"]
+
