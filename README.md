@@ -2,6 +2,8 @@
 
 Run YNAB 4 on macOS using Docker
 
+Note: Tested on macOS Mojave
+
 ## Setup
 
 1. Install [Docker Desktop for Mac](https://download.docker.com/mac/stable/Docker.dmg)
