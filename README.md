@@ -1,4 +1,4 @@
-# docker-ynab
+# ynab4-docker
 
 Run YNAB 4 on macOS using Docker
 
