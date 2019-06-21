@@ -1,18 +1,19 @@
-ynab:
-  build: .  
-  volumes:
-   # Mount the X11 socket so that we can share graphics with the host system
-   - /tmp/.X11-unix:/tmp/.X11-unix
-   - ~/.Xauthority:/home/docker/.Xauthority
-   # Map the YNAB folder on the host to the YNAB folder in the container
-   - ~/YNAB:/home/docker/YNAB
-   # Map the Downloads directory on the host, into the container
-   - ~/Downloads:/home/docker/Downloads
-  environment:
-   # Pass through the hosts DISPLAY env setting
-   - DISPLAY=${IP}:0
-   # Sometimes YNAB wants to render a pop-up/pop-under that kills the
-   # process due to a problem with OpenGL (most likely). Setting this
-   # may make rendering slower, but it makes it more reliable.
-   - LIBGL_ALWAYS_SOFTWARE=1
-  net: host
+version: '3.7'
+services:
+  ynab:
+    build: .
+    volumes:
+    # Mount the X11 socket so that we can share graphics with the host system
+    - /tmp/.X11-unix:/tmp/.X11-unix
+    - ~/.Xauthority:/home/docker/.Xauthority
+    # Map the YNAB folder on the host to the YNAB folder in the container
+    - ~/YNAB:/home/docker/YNAB
+    # Map the Downloads directory on the host, into the container
+    - ~/Downloads:/home/docker/Downloads
+    environment:
+    # Pass through the hosts DISPLAY env setting
+    - DISPLAY=${DISPLAY_IP}:0
+    # Sometimes YNAB wants to render a pop-up/pop-under that kills the
+    # process due to a problem with OpenGL (most likely). Setting this
+    # may make rendering slower, but it makes it more reliable.
+    - LIBGL_ALWAYS_SOFTWARE=1    
