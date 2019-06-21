@@ -20,9 +20,6 @@ RUN apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic mai
 ENV TZ=America/Los_Angeles
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Add the ynab installer to the image.
-ADD ["https://downloadpull-youneedabudgetco.netdna-ssl.com/ynab4/liveCaptive/Win/YNAB%204_4.3.857_Setup.exe", "ynab_setup.exe"]
-
 # Create user
 RUN export uid=1000 gid=1000 && \
     mkdir -p /home/docker && \
@@ -33,8 +30,9 @@ RUN export uid=1000 gid=1000 && \
     chown ${uid}:${gid} -R /home/docker
 ENV HOME /home/docker
 WORKDIR /home/docker
-RUN chown docker:docker ynab_setup.exe
 USER docker
+# Add the ynab installer to the image.
+ADD ["https://downloadpull-youneedabudgetco.netdna-ssl.com/ynab4/liveCaptive/Win/YNAB%204_4.3.857_Setup.exe", "ynab_setup.exe"]
 
 ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["wine ./ynab_setup.exe | cat;"]
