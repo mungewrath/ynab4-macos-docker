@@ -12,7 +12,7 @@ Note: Tested on macOS Mojave
 1. Log out and back in again
 1. Download this repo: `wget https://github.com/bradymholt/ynab4-docker/archive/master.zip && unzip master.zip`
 1. Run
-```
-cd ynab4-docker-master
-./start.sh
-```
+    ```
+    cd ynab4-docker-master
+    ./start.sh
+    ```
