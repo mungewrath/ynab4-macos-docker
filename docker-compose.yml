@@ -6,10 +6,10 @@ services:
     # Mount the X11 socket so that we can share graphics with the host system
     - /tmp/.X11-unix:/tmp/.X11-unix
     - ~/.Xauthority:/home/docker/.Xauthority
-    # Map the YNAB folder on the host to the YNAB folder in the container
+    # Map the YNAB directory on the host. This is where YNAB software is installed
     - ~/YNAB:/home/docker/YNAB
-    # Map the Downloads directory on the host, into the container
-    - ~/Downloads:/home/docker/Downloads
+    # Contains saved/synced budgets. Change the source directory to Dropbox, etc
+    - ~/YNAB-budgets:/home/docker/Documents
     environment:
     # Pass through the hosts DISPLAY env setting
     - DISPLAY=${DISPLAY_IP}:0
